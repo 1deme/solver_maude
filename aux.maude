@@ -1,0 +1,28 @@
+mod AUX is
+    protecting SYNTAX .
+    protecting NAT .
+    protecting FLOAT .
+
+    vars T T1 T2 : Term .
+    vars TA1 TA2 : OrderedArgs .
+    vars UA1 UA2 : UnorderedArgs .
+
+    op size : OrderedArgs -> Nat .
+    eq size(nil) = 0 .
+    eq size((T, TA1)) = 1 + size(TA1) .
+
+    op msize : UnorderedArgs -> Nat .
+    eq msize(mnil) = 0 .
+    eq msize((T ; UA1)) = 1 + msize(UA1) .
+
+    op zip : OrderedArgs OrderedArgs -> CNF .
+    eq zip(nil, nil) = Cnil .
+    eq zip((T1, TA1), (T2, TA2)) = (T1 ~ T2) /\ zip(TA1, TA2) .
+    eq zip(TA1, TA2) = Cnil [owise] .
+
+    op unzip : UnorderedArgs UnorderedArgs -> CNF .
+    rl unzip(mnil, mnil) => Cnil .
+    rl unzip((T1 ; UA1), (T2 ; UA2)) => (T1 ~ T2) /\ unzip(UA1, UA2) .
+    rl unzip(UA1, UA2) => Cnil .
+
+endm

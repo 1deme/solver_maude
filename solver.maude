@@ -1,11 +1,21 @@
 mod SOLVER is
     protecting SYNTAX .
+    protecting AUX .
 
-    vars S : String .
+    vars S1 S2 S : String .
+    vars T1 T2 : Term .
+    vars TA1 TA2 : OrderedArgs .
     var C : CNF .
     var RS : RelationSet .
-    vars F1 F2 : Float .
+    vars F1 F2 RVal : Float .
 
     rl [Var-Del-Sim] : 
         < Var(S) ~ Var(S) /\ C ; F1 >(RS) F2 => < C ; F1 >(RS) F2 .
+
+    crl [Ord-Dec-Sim] :
+        < Ord(S1)(TA1) ~ Ord(S2)(TA2) /\ C ; F1 >(RS) F2 => < zip(TA1, TA2) /\ C ; min(F1, RVal) >(RS) F2
+      if RVal := getVal(RS, R(Ord(S1), Ord(S2))) /\ 
+         RVal > F2 /\ 
+         TA1 =/= nil  /\ size(TA1) == size(TA2) .
+    
 endm
