@@ -56,10 +56,10 @@ mod SYNTAX is
 
   subsort equation < CNF .
 
-  op _~_ : Term Term -> equation [ctor] .
+  op _~_ : Term Term -> equation [ctor prec 40] .
 
   op Cnil : -> CNF [ctor] .
-  op _/\_ : CNF CNF -> CNF [assoc comm id: Cnil] .
+  op _/\_ : CNF CNF -> CNF [assoc comm id: Cnil prec 50] .
 
   op <_;_>(_) _ : CNF Float RelationSet Float -> system .
 

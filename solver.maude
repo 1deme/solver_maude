@@ -1,0 +1,11 @@
+mod SOLVER is
+    protecting SYNTAX .
+
+    vars S : String .
+    var C : CNF .
+    var RS : RelationSet .
+    vars F1 F2 : Float .
+
+    rl [Var-Del-Sim] : 
+        < Var(S) ~ Var(S) /\ C ; F1 >(RS) F2 => < C ; F1 >(RS) F2 .
+endm
