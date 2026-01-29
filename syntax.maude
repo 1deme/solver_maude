@@ -1,0 +1,66 @@
+mod SYNTAX is
+  protecting STRING .
+  protecting FLOAT .
+
+  sorts Term FunSym FunSymOrd FunSymUrd VarSym OrderedArgs UnorderedArgs .
+
+  subsort FunSymOrd FunSymUrd < FunSym .
+  subsort FunSym < Term .
+  subsort VarSym < Term .
+  
+  subsort Term < UnorderedArgs .
+  subsort Term < OrderedArgs .
+
+  op Ord : String -> FunSymOrd [ctor] .
+  op Urd : String -> FunSymUrd [ctor] .
+  op Var : String -> VarSym [ctor] .
+
+  op nil : -> OrderedArgs [ctor] .
+  op _,_ : OrderedArgs OrderedArgs -> OrderedArgs [assoc ctor id: nil] .
+
+  op _(_) : FunSymOrd OrderedArgs -> Term [prec 15] .
+
+  op mnil : -> UnorderedArgs [ctor] .
+  op _;_ : UnorderedArgs UnorderedArgs -> UnorderedArgs [assoc comm id: mnil] .
+
+  op _{_} : FunSymUrd UnorderedArgs -> Term [prec 15] .
+
+  ------------------------------Relations-----------------------------------------
+
+  sorts RelationPair Relation RelationSet .
+  subsort Relation < RelationSet .
+
+  op R : FunSym FunSym -> RelationPair [ctor comm] .
+
+  op _=_ : RelationPair Float -> Relation [ctor prec 30] .
+
+  op rnil : -> RelationSet [ctor] .
+  op _&&_ : RelationSet RelationSet -> RelationSet [assoc comm id: rnil prec 50] .
+
+  -------------------AUX---------------------------
+
+  op getVal : RelationSet RelationPair -> Float .
+
+  vars RP RP2 : RelationPair .
+  var RS : RelationSet .
+  var F : Float .
+
+  eq getVal((RP = F) && RS, RP) = F .
+
+  eq getVal(RS, RP) = 0.0 [owise] .
+
+
+  --- -------------------Equation, CNF and Problem---------------------
+
+  sort equation CNF system .
+
+  subsort equation < CNF .
+
+  op _~_ : Term Term -> equation [ctor] .
+
+  op Cnil : -> CNF [ctor] .
+  op _/\_ : CNF CNF -> CNF [assoc comm id: Cnil] .
+
+  op <_;_>(_) _ : CNF Float RelationSet Float -> system .
+
+endm
