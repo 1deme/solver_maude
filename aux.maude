@@ -18,11 +18,10 @@ mod AUX is
     op zip : OrderedArgs OrderedArgs -> CNF .
     eq zip(nil, nil) = Cnil .
     eq zip((T1, TA1), (T2, TA2)) = (T1 ~ T2) /\ zip(TA1, TA2) .
-    eq zip(TA1, TA2) = Cnil [owise] .
 
     op unzip : UnorderedArgs UnorderedArgs -> CNF .
-    rl unzip(mnil, mnil) => Cnil .
-    rl unzip((T1 ; UA1), (T2 ; UA2)) => (T1 ~ T2) /\ unzip(UA1, UA2) .
-    rl unzip(UA1, UA2) => Cnil .
+    rl [step] : unzip((T1 ; UA1), (T2 ; UA2)) => (T1 ~ T2) /\ unzip(UA1, UA2) .
+    rl [success] : unzip(mnil, mnil) => Cnil .
+    crl [fail] : unzip(UA1, UA2) => Cnil if msize(UA1) =/= msize(UA2) .
 
 endm

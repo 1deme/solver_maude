@@ -5,6 +5,7 @@ mod SOLVER is
     vars S1 S2 S : String .
     vars T1 T2 : Term .
     vars TA1 TA2 : OrderedArgs .
+    vars UA1 UA2 : UnorderedArgs .
     var C : CNF .
     var RS : RelationSet .
     vars F1 F2 RVal : Float .
@@ -14,8 +15,15 @@ mod SOLVER is
 
     crl [Ord-Dec-Sim] :
         < Ord(S1)(TA1) ~ Ord(S2)(TA2) /\ C ; F1 >(RS) F2 => < zip(TA1, TA2) /\ C ; min(F1, RVal) >(RS) F2
-      if RVal := getVal(RS, R(Ord(S1), Ord(S2))) /\ 
-         RVal > F2 /\ 
-         TA1 =/= nil  /\ size(TA1) == size(TA2) .
+        if RVal := getVal(RS, R(Ord(S1), Ord(S2))) /\ 
+        RVal > F2 /\ 
+        TA1 =/= nil  /\ size(TA1) == size(TA2) .
+
+    crl [Urd-Dec-Sim] :
+        < (Urd(S1){UA1} ~ Urd(S2){UA2}) /\ C ; F1 >(RS) F2 => < unzip(UA1, UA2) /\ C ; min(F1, RVal) >(RS) F2
+        if RVal := getVal(RS, R(Urd(S1), Urd(S2))) /\ 
+        RVal > F2 /\ 
+        UA1 =/= mnil /\ 
+        msize(UA1) == msize(UA2) .
     
 endm
