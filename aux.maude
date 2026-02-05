@@ -6,6 +6,7 @@ mod AUX is
     vars T T1 T2 : Term .
     vars TA1 TA2 : OrderedArgs .
     vars UA1 UA2 : UnorderedArgs .
+    var  S : String . 
 
     op size : OrderedArgs -> Nat .
     eq size(nil) = 0 .
@@ -23,5 +24,9 @@ mod AUX is
     rl [step] : unzip((T1 ; UA1), (T2 ; UA2)) => (T1 ~ T2) /\ unzip(UA1, UA2) .
     rl [success] : unzip(mnil, mnil) => Cnil .
     crl [fail] : unzip(UA1, UA2) => Cnil if msize(UA1) =/= msize(UA2) .
+
+    op getSym : Term -> FunSym .
+    eq getSym(Urd(S){UA1}) = Urd(S) .
+    eq getSym(Ord(S)(TA1)) = Ord(S) .
 
 endm

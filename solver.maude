@@ -29,5 +29,11 @@ mod SOLVER is
     crl [Var-Ori-Sim] :
         < (T2 ~ Var(S)) /\ K ; F1 >(RS) F2 => < (Var(S) ~ T2) /\ K ; F1 >(RS) F2 
         if not (T2 :: VarSym) .
+
+    crl [Sym-Con-Sim] :
+        < (T1 ~ T2) /\ K ; F1 >(RS) F2 => Fail
+        if not (T1 :: VarSym) /\ not (T2 :: VarSym) /\
+        RVal := getVal(RS, R(getSym(T1), getSym(T2))) /\
+        RVal <= F2 .
     
 endm
