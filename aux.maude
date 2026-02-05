@@ -6,10 +6,20 @@ mod AUX is
     vars T T1 T2 : Term .
     vars TA1 TA2 OA : OrderedArgs .
     vars UA1 UA2 UA : UnorderedArgs .
+    vars RP RP2 : RelationPair .
+    var RS : RelationSet .
+    var F : Float .
     var S : String . 
     var V : VarSym .
-    var E : equation .  --- Fixed: lowercase 'e'
+    var E : equation .
     var C : CNF .
+    var S1 : FunSym .
+    
+    op getVal : RelationSet RelationPair -> Float .
+    eq getVal(RS, R(S1, S1)) = 1.0 .
+    eq getVal((RP = F) && RS, RP) = F .
+    eq getVal(RS, RP) = 0.0 [owise] .
+
     
     op size : OrderedArgs -> Nat .
     eq size(nil) = 0 .

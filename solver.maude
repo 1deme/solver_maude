@@ -15,13 +15,15 @@ mod SOLVER is
         < Var(S) ~ Var(S) /\ K | Sigma ; F1 >(RS) F2 => < K | Sigma ; F1 >(RS) F2 .
 
     crl [Ord-Dec-Sim] :
-        < Ord(S1)(TA1) ~ Ord(S2)(TA2) /\ K | Sigma ; F1 >(RS) F2 => < zip(TA1, TA2) /\ K | Sigma ; min(F1, RVal) >(RS) F2
+        < Ord(S1)(TA1) ~ Ord(S2)(TA2) /\ K | Sigma ; F1 >(RS) F2 => 
+            < zip(TA1, TA2) /\ K | Sigma ; min(F1, RVal) >(RS) F2
         if RVal := getVal(RS, R(Ord(S1), Ord(S2))) /\ 
         RVal > F2 /\ 
         TA1 =/= nil  /\ size(TA1) == size(TA2) .
 
     crl [Urd-Dec-Sim] :
-        < (Urd(S1){UA1} ~ Urd(S2){UA2}) /\ K | Sigma ; F1 >(RS) F2 => < unzip(UA1, UA2) /\ K | Sigma ; min(F1, RVal) >(RS) F2
+        < (Urd(S1){UA1} ~ Urd(S2){UA2}) /\ K | Sigma ; F1 >(RS) F2 => 
+            < unzip(UA1, UA2) /\ K | Sigma ; min(F1, RVal) >(RS) F2
         if RVal := getVal(RS, R(Urd(S1), Urd(S2))) /\ 
         RVal > F2 /\ 
         UA1 =/= mnil /\ 

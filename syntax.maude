@@ -37,19 +37,6 @@ mod SYNTAX is
   op rnil : -> RelationSet [ctor] .
   op _&&_ : RelationSet RelationSet -> RelationSet [assoc comm id: rnil prec 50] .
 
-  -------------------AUX---------------------------
-
-  op getVal : RelationSet RelationPair -> Float .
-
-  vars RP RP2 : RelationPair .
-  var RS : RelationSet .
-  var F : Float .
-
-  eq getVal((RP = F) && RS, RP) = F .
-
-  eq getVal(RS, RP) = 0.0 [owise] .
-
-
   --- -------------------Equation, CNF and Problem---------------------
 
   sort equation CNF system .
