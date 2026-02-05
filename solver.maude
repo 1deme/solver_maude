@@ -3,37 +3,48 @@ mod SOLVER is
     protecting AUX .
 
     vars S1 S2 S : String .
-    vars T1 T2 : Term .
+    vars T T1 T2 : Term .
     vars TA1 TA2 : OrderedArgs .
     vars UA1 UA2 : UnorderedArgs .
-    var K : CNF .
+    var K Sigma : CNF .
     var RS : RelationSet .
     vars F1 F2 RVal : Float .
 
+
     rl [Var-Del-Sim] : 
-        < Var(S) ~ Var(S) /\ K ; F1 >(RS) F2 => < K ; F1 >(RS) F2 .
+        < Var(S) ~ Var(S) /\ K | Sigma ; F1 >(RS) F2 => < K | Sigma ; F1 >(RS) F2 .
 
     crl [Ord-Dec-Sim] :
-        < Ord(S1)(TA1) ~ Ord(S2)(TA2) /\ K ; F1 >(RS) F2 => < zip(TA1, TA2) /\ K ; min(F1, RVal) >(RS) F2
+        < Ord(S1)(TA1) ~ Ord(S2)(TA2) /\ K | Sigma ; F1 >(RS) F2 => < zip(TA1, TA2) /\ K | Sigma ; min(F1, RVal) >(RS) F2
         if RVal := getVal(RS, R(Ord(S1), Ord(S2))) /\ 
         RVal > F2 /\ 
         TA1 =/= nil  /\ size(TA1) == size(TA2) .
 
     crl [Urd-Dec-Sim] :
-        < (Urd(S1){UA1} ~ Urd(S2){UA2}) /\ K ; F1 >(RS) F2 => < unzip(UA1, UA2) /\ K ; min(F1, RVal) >(RS) F2
+        < (Urd(S1){UA1} ~ Urd(S2){UA2}) /\ K | Sigma ; F1 >(RS) F2 => < unzip(UA1, UA2) /\ K | Sigma ; min(F1, RVal) >(RS) F2
         if RVal := getVal(RS, R(Urd(S1), Urd(S2))) /\ 
         RVal > F2 /\ 
         UA1 =/= mnil /\ 
         msize(UA1) == msize(UA2) .
     
     crl [Var-Ori-Sim] :
-        < (T2 ~ Var(S)) /\ K ; F1 >(RS) F2 => < (Var(S) ~ T2) /\ K ; F1 >(RS) F2 
+        < (T2 ~ Var(S)) /\ K | Sigma ; F1 >(RS) F2 => < (Var(S) ~ T2) /\ K | Sigma ; F1 >(RS) F2 
         if not (T2 :: VarSym) .
 
     crl [Sym-Con-Sim] :
-        < (T1 ~ T2) /\ K ; F1 >(RS) F2 => Fail
+        < (T1 ~ T2) /\ K | Sigma ; F1 >(RS) F2 => Fail
         if not (T1 :: VarSym) /\ not (T2 :: VarSym) /\
         RVal := getVal(RS, R(getSym(T1), getSym(T2))) /\
         RVal <= F2 .
+
+    crl [Occurs-Check-Sim] :
+        < (Var(S) ~ T) /\ K | Sigma ; F1 >(RS) F2 => Fail
+        if T =/= Var(S) /\
+        occurs(Var(S), T) == true .
+
+    crl [Sol-Con-Sim] :
+        < (Var(S) ~ T) /\ K | Sigma ; F1 >(RS) F2 =>
+            < applySubst(K, Var(S), T) | (Var(S) ~ T) /\ Sigma ; F1 >(RS) F2
+        if T =/= Var(S) /\ occurs(Var(S), T) == false .
     
 endm

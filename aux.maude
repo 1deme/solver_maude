@@ -4,10 +4,13 @@ mod AUX is
     protecting FLOAT .
 
     vars T T1 T2 : Term .
-    vars TA1 TA2 : OrderedArgs .
-    vars UA1 UA2 : UnorderedArgs .
-    var  S : String . 
-
+    vars TA1 TA2 OA : OrderedArgs .
+    vars UA1 UA2 UA : UnorderedArgs .
+    var S : String . 
+    var V : VarSym .
+    var E : equation .  --- Fixed: lowercase 'e'
+    var C : CNF .
+    
     op size : OrderedArgs -> Nat .
     eq size(nil) = 0 .
     eq size((T, TA1)) = 1 + size(TA1) .
@@ -29,4 +32,43 @@ mod AUX is
     eq getSym(Urd(S){UA1}) = Urd(S) .
     eq getSym(Ord(S)(TA1)) = Ord(S) .
 
+    op occurs : VarSym Term -> Bool .
+    op occursOrd : VarSym OrderedArgs -> Bool .
+    op occursUrd : VarSym UnorderedArgs -> Bool .
+
+    eq occurs(V, Var(S)) = (Var(S) == V) .
+    eq occurs(V, Ord(S)(TA1)) = occursOrd(V, TA1) .
+    eq occurs(V, Urd(S){UA1}) = occursUrd(V, UA1) .
+    eq occurs(V, T:Term) = false [owise] .
+
+    eq occursOrd(V, nil) = false .
+    eq occursOrd(V, (T, TA1)) = occurs(V, T) or occursOrd(V, TA1) .
+
+    eq occursUrd(V, mnil) = false .
+    eq occursUrd(V, (T ; UA1)) = occurs(V, T) or occursUrd(V, UA1) .
+
+    --- Corrected signatures (Removed duplicates and fixed case)
+    op applySubst : CNF VarSym Term -> CNF .
+    op applySubstEq : equation VarSym Term -> equation .
+    op applySubstTerm : Term VarSym Term -> Term .
+    op applySubstOrd : OrderedArgs VarSym Term -> OrderedArgs .
+    op applySubstUrd : UnorderedArgs VarSym Term -> UnorderedArgs .
+
+    eq applySubst(E /\ C, V, T) = applySubstEq(E, V, T) /\ applySubst(C, V, T) .
+    eq applySubst(Cnil, V, T) = Cnil .
+    
+    eq applySubstEq(T1 ~ T2, V, T) = applySubstTerm(T1, V, T) ~ applySubstTerm(T2, V, T) .
+
+    --- Replacement logic
+    eq applySubstTerm(V, V, T) = T . 
+    eq applySubstTerm(Ord(S)(OA), V, T) = Ord(S)(applySubstOrd(OA, V, T)) .
+    eq applySubstTerm(Urd(S){UA}, V, T) = Urd(S){applySubstUrd(UA, V, T)} .
+    eq applySubstTerm(T1, V, T) = T1 [owise] .
+
+    --- Argument Lists
+    eq applySubstOrd((T1, OA), V, T) = (applySubstTerm(T1, V, T), applySubstOrd(OA, V, T)) .
+    eq applySubstOrd(nil, V, T) = nil .
+
+    eq applySubstUrd((T1 ; UA), V, T) = (applySubstTerm(T1, V, T) ; applySubstUrd(UA, V, T)) .
+    eq applySubstUrd(mnil, V, T) = mnil .
 endm

@@ -62,6 +62,6 @@ mod SYNTAX is
   op _/\_ : CNF CNF -> CNF [assoc comm id: Cnil prec 50] .
 
   op Fail : -> system [ctor] .
-  op <_;_>(_) _ : CNF Float RelationSet Float -> system .
+  op <_|_ ; _ >(_) _ : CNF CNF Float RelationSet Float -> system .
 
 endm
