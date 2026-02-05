@@ -57,7 +57,6 @@ mod AUX is
     eq occursUrd(V, mnil) = false .
     eq occursUrd(V, (T ; UA1)) = occurs(V, T) or occursUrd(V, UA1) .
 
-    --- Corrected signatures (Removed duplicates and fixed case)
     op applySubst : CNF VarSym Term -> CNF .
     op applySubstEq : equation VarSym Term -> equation .
     op applySubstTerm : Term VarSym Term -> Term .
@@ -69,13 +68,11 @@ mod AUX is
     
     eq applySubstEq(T1 ~ T2, V, T) = applySubstTerm(T1, V, T) ~ applySubstTerm(T2, V, T) .
 
-    --- Replacement logic
     eq applySubstTerm(V, V, T) = T . 
     eq applySubstTerm(Ord(S)(OA), V, T) = Ord(S)(applySubstOrd(OA, V, T)) .
     eq applySubstTerm(Urd(S){UA}, V, T) = Urd(S){applySubstUrd(UA, V, T)} .
     eq applySubstTerm(T1, V, T) = T1 [owise] .
 
-    --- Argument Lists
     eq applySubstOrd((T1, OA), V, T) = (applySubstTerm(T1, V, T), applySubstOrd(OA, V, T)) .
     eq applySubstOrd(nil, V, T) = nil .
 
