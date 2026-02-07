@@ -1,0 +1,24 @@
+search in SOLVER : 
+  < (Urd("fu"){ Ord("fo")(Var("X") , Ord("bo")(nil)) ; 
+                Ord("ho")(Var("X") , Var("Y")) ; 
+                Var("Z") } ~ 
+     Urd("gu"){ Ord("go")(Ord("ao")(nil) , Var("Y")) ; 
+                Ord("bo")(nil) ; 
+                Ord("fo")(Var("X") , Var("Z")) }) 
+    | Cnil ; 1.0 >
+    (R(Urd("fu"), Urd("gu")) = 0.6 && 
+     R(Ord("fo"), Ord("go")) = 0.5 && 
+     R(Ord("fo"), Ord("ho")) = 0.4 && 
+     R(Ord("ho"), Ord("go")) = 0.4) 
+    0.4
+  =>! < Cnil | Sigma ; F1 >(RS) F2 .
+
+search in SOLVER : 
+  < (Ord("fo")(Var("X") , Ord("ho")(Var("Y") , nil)) ~ 
+     Ord("go")(Ord("ho")(Ord("ao")(nil) , nil) , Ord("po")(Ord("bo")(nil) , nil))) 
+    | Cnil ; 1.0 >
+    (R(Ord("fo"), Ord("go")) = 0.9 && 
+     R(Ord("ho"), Ord("po")) = 0.7 && 
+     R(Ord("ao"), Ord("bo")) = 0.6) 
+    0.6
+  =>! < Cnil | Sigma ; F1 >(RS) F2 .
