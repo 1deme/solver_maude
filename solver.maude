@@ -43,7 +43,7 @@ mod SOLVER is
 
     crl [Sol-Con-Sim] :
         < (Var(S) ~ T) /\ K | Sigma ; F1 >(RS) F2 =>
-            < applySubst(K, Var(S), T) | (Var(S) ~ T) /\ Sigma ; F1 >(RS) F2
+            < applySubst(K, Var(S), T) | (Var(S) ~ T) /\ applySubst(Sigma, Var(S), T) ; F1 >(RS) F2
         if T =/= Var(S) /\ occurs(Var(S), T) == false .
     
 endm
