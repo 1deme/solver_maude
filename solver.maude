@@ -17,14 +17,12 @@ mod SOLVER is
     crl [Ord-Dec-Sim] :
         < (Ord(S1)(TA1) ~ Ord(S2)(TA2)) /\ K | Sigma ; F1 >(RS) F2 => 
             < zip(TA1, TA2) /\ K | Sigma ; min(F1, RVal) >(RS) F2
-        if RVal := RS[R(Ord(S1), Ord(S2))] /\ 
-        RVal >= F2 /\ # TA1 == # TA2 .
+        if RVal := RS[R(Ord(S1), Ord(S2))] /\ RVal >= F2 /\ # TA1 == # TA2 .
 
     crl [Urd-Dec-Sim] :
         < (Urd(S1){UA1} ~ Urd(S2){UA2}) /\ K | Sigma ; F1 >(RS) F2 => 
             < unzip(UA1, UA2) /\ K | Sigma ; min(F1, RVal) >(RS) F2
-        if RVal := RS[R(Urd(S1), Urd(S2))] /\ 
-        RVal >= F2 /\ # UA1 == # UA2 .
+        if RVal := RS[R(Urd(S1), Urd(S2))] /\ RVal >= F2 /\ # UA1 == # UA2 .
     
     crl [Var-Ori-Sim] :
         < (T2 ~ Var(S)) /\ K | Sigma ; F1 >(RS) F2 => < (Var(S) ~ T2) /\ K | Sigma ; F1 >(RS) F2 
@@ -32,9 +30,7 @@ mod SOLVER is
 
     crl [Sym-Con-Sim] :
         < (T1 ~ T2) /\ K | Sigma ; F1 >(RS) F2 => Fail
-        if not (T1 :: VarSym) /\ not (T2 :: VarSym) /\
-        RVal := RS[R(getSym(T1), getSym(T2))] /\
-        RVal < F2 .
+        if not (T1 :: VarSym) /\ not (T2 :: VarSym) /\ RS[R(getSym(T1), getSym(T2))] < F2 .
 
     crl [Occurs-Check-Sim] :
         < (Var(S) ~ T) /\ K | Sigma ; F1 >(RS) F2 => Fail
