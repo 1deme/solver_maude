@@ -61,4 +61,7 @@ mod SYNTAX is
   op #_ : OrderedArgs -> Nat [prec 10] .
   op #_ : UnorderedArgs -> Nat [prec 10] .
 
+  op _[_] : RelationSet RelationPair -> Float . ---for getting value of relation
+
+
 endm

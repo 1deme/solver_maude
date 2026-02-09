@@ -15,10 +15,9 @@ mod AUX is
     var C : CNF .
     var S1 : FunSym .
     
-    op getVal : RelationSet RelationPair -> Float .
-    eq getVal(RS, R(S1, S1)) = 1.0 .
-    eq getVal((RP = F) && RS, RP) = F .
-    eq getVal(RS, RP) = 0.0 [owise] .
+    eq RS[R(S1, S1)] = 1.0 .
+    eq ((RP = F) && RS)[RP] = F .
+    eq RS[RP] = 0.0 [owise] .
 
 
     eq # nil = 0 .
