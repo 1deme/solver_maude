@@ -57,4 +57,8 @@ mod SYNTAX is
   op _∈_ : VarSym OrderedArgs -> Bool .
   op _∈_ : VarSym UnorderedArgs -> Bool .
 
+
+  op #_ : OrderedArgs -> Nat [prec 10] .
+  op #_ : UnorderedArgs -> Nat [prec 10] .
+
 endm

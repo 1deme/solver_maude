@@ -20,14 +20,12 @@ mod AUX is
     eq getVal((RP = F) && RS, RP) = F .
     eq getVal(RS, RP) = 0.0 [owise] .
 
-    
-    op size : OrderedArgs -> Nat .
-    eq size(nil) = 0 .
-    eq size((T, TA1)) = 1 + size(TA1) .
 
-    op msize : UnorderedArgs -> Nat .
-    eq msize(mnil) = 0 .
-    eq msize((T ; UA1)) = 1 + msize(UA1) .
+    eq # nil = 0 .
+    eq # (T , TA1) = 1 + (# TA1) .
+
+    eq # mnil = 0 .
+    eq # (T ; UA1) = 1 + (# UA1) .
 
     op zip : OrderedArgs OrderedArgs -> CNF .
     eq zip(nil, nil) = Cnil .
@@ -36,7 +34,7 @@ mod AUX is
     op unzip : UnorderedArgs UnorderedArgs -> CNF .
     rl [step] : unzip((T1 ; UA1), (T2 ; UA2)) => (T1 ~ T2) /\ unzip(UA1, UA2) .
     rl [success] : unzip(mnil, mnil) => Cnil .
-    crl [fail] : unzip(UA1, UA2) => Cnil if msize(UA1) =/= msize(UA2) .
+    crl [fail] : unzip(UA1, UA2) => Cnil if # UA1 =/= # UA2 .
 
     op getSym : Term -> FunSym .
     eq getSym(Urd(S){UA1}) = Urd(S) .
