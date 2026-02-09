@@ -42,20 +42,17 @@ mod AUX is
     eq getSym(Urd(S){UA1}) = Urd(S) .
     eq getSym(Ord(S)(TA1)) = Ord(S) .
 
-    op occurs : VarSym Term -> Bool .
-    op occursOrd : VarSym OrderedArgs -> Bool .
-    op occursUrd : VarSym UnorderedArgs -> Bool .
 
-    eq occurs(V, Var(S)) = (Var(S) == V) .
-    eq occurs(V, Ord(S)(TA1)) = occursOrd(V, TA1) .
-    eq occurs(V, Urd(S){UA1}) = occursUrd(V, UA1) .
-    eq occurs(V, T:Term) = false [owise] .
+    eq V ∈ Var(S) = (Var(S) == V) .
+    eq V ∈ Ord(S)(TA1) = V ∈ TA1 .
+    eq V ∈ Urd(S){UA1} = V ∈ UA1 .
+    eq V ∈ T:Term = false [owise] .
 
-    eq occursOrd(V, nil) = false .
-    eq occursOrd(V, (T, TA1)) = occurs(V, T) or occursOrd(V, TA1) .
+    eq V ∈ nil = false .
+    eq V ∈ (T, TA1) = V ∈ T or V ∈ TA1 .
 
-    eq occursUrd(V, mnil) = false .
-    eq occursUrd(V, (T ; UA1)) = occurs(V, T) or occursUrd(V, UA1) .
+    eq V ∈ mnil = false .
+    eq V ∈ (T ; UA1) = V ∈ T or V ∈ UA1 .
 
     op applySubst : CNF VarSym Term -> CNF .
     op applySubstEq : equation VarSym Term -> equation .

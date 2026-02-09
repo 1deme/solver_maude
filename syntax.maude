@@ -51,4 +51,10 @@ mod SYNTAX is
   op Fail : -> system [ctor] .
   op <_|_ ; _ >(_) _ : CNF CNF Float RelationSet Float -> system .
 
+  --------------------------------for if conditions------------------------
+
+  op _∈_ : VarSym Term -> Bool .
+  op _∈_ : VarSym OrderedArgs -> Bool .
+  op _∈_ : VarSym UnorderedArgs -> Bool .
+
 endm
